@@ -64,13 +64,24 @@ module.exports.login=async(req,res)=>{
     }
 }
 
-module.exports.blacklist=async((req,res)=>{
+module.exports.logout=async(req,res)=>{
     try{
-        const user=mongoose.black_list_user
+        const token=req.cookies.token;
+        await black_list_user.create({token});
+        res.clearCookie('token');
+        res.send({message:'UserLoggedout Successfully'});
     }
-    catch(){
-
+    catch(error){
+        res.status(500).json({message:error.message});
     }
-})
+}
 
 
+module.exports.profile=async(req,res)=>{
+    try{
+        res.send(req.user);
+    }
+    catch(error){
+        res.status(500).json({message:error.message})
+    }
+}

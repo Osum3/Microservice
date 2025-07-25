@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 
 const black_list_user=new mongoose.Schema({
             Token:{
-                no:String,
+                type:String,
                 required:true
             },
             createdAt:{
