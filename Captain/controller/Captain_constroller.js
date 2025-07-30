@@ -109,7 +109,7 @@ const pendingrequest=[];
 
 
 // Long Polling
-module.exports.wairfornewride=async(req,res)=>{
+module.exports.waitfornewride=async(req,res)=>{
     req.setTimeout(30000,() => {
         res.status(204).end();   
     });

@@ -8,6 +8,8 @@ const userController=require('./controller/user_constroller')
 router.post('/Register',userController.register)
 router.post('/Login',userController.login)
 router.get('/Logout',userController.logout)
-router.get('/Profile',AuthMiddleware.userAuth,userController.profile)
+router.get('/Profile',AuthMiddleware.userAuth,userController.profile);
+router.get('/accepted-ride', AuthMiddleware.userAuth,userController.acceptedRide)
+
 
 module.exports=router;

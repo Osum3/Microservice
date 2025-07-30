@@ -8,5 +8,5 @@ rabbit.connectRabbitMQ()
 console.log("rides_routes.js")
 router.post('/create-ride', authMiddleware.UserAuth, riderController.createRide)
 router.put('/accept-ride', authMiddleware.captainAuth, riderController.acceptRide)
-
+// , authMiddleware.captainAuth,
 module.exports = router;

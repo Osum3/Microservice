@@ -10,5 +10,5 @@ router.post('/Login', captainController.login);
 router.get('/Logout', captainController.logout);
 router.get('/Profile', AuthMiddleware.CaptainAuth, captainController.profile);
 router.patch('/Toggle_availability',AuthMiddleware.CaptainAuth,captainController.Available)
-router.get('/waitfornewride',AuthMiddleware.CaptainAuth,captainController.wairfornewride)
+router.get('/waitfornewride',AuthMiddleware.CaptainAuth,captainController.waitfornewride)
 module.exports=router;
