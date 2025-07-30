@@ -1,11 +1,13 @@
-const userModel= require('../models/user.model')
+const userModel= require('../models/Captain.model')
 const bcrypt= require('bcrypt')
 const jwt =require('jsonwebtoken')
 const BlacklistToken = require('../models/blacklist_token')
-
+const CaptainModel = require('../models/Captain.model')
+const {subscribeToQueue} = require('../service/RabbitMq');
 module.exports.register = async(req,res)=>{
     try{
-        console.log("reached Here");
+        console.log("captain routes");
+
             const { name ,email,password} =req.body;
            
             const user=await userModel.findOne({email});
@@ -89,3 +91,36 @@ module.exports.profile=async(req,res)=>{
         res.status(500).json({message:error.message})
     }
 }
+
+
+module.exports.Available = async (req, res) => {
+    try {
+        const captain = await CaptainModel.findById(req.captain);
+        captain.isAvailable=!captain.isAvailable;
+        await captain.save();
+        res.json(captain.isAvailable);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+
+const pendingrequest=[];
+
+
+// Long Polling
+module.exports.wairfornewride=async(req,res)=>{
+    req.setTimeout(30000,() => {
+        res.status(204).end();   
+    });
+    pendingrequest.push(res);
+}
+
+
+subscribeToQueue("new-ride",(data)=>{
+    const ridedata=JSON.parse(data);
+    pendingrequest.forEach(res=>{
+        res.json(ridedata);
+    })
+    pendingrequest.length=0;
+})
